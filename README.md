@@ -81,12 +81,83 @@ $('#custom-tempaltes .typeahead').typeahead(null, {
     suggestion: Handlebars.compile('<div><strong>{{value}}</strong> - {{year}}</div>')
   }
 });
+
+var nflTeams = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  identify: function(obj){ return obj.team; },
+  prefetch: '../data/nfl.json'
+});
+function nflTeamWithDefaults(q, sync){
+  if(q === ''){
+    sync(nflTeams.get('Detroit Lions', 'Green Bay Packers', 'Chicago Bears'));
+  }
+  else {
+    nflTeam.search(q, sync);
+  }
+}
+$('#default-suggestions .typeahead').typeahead({
+  minLenth: 0,
+  highlight: true
+},
+{
+  name: 'nfl-teams',
+  display: 'team',
+  source: nflTeamsWithDefaults
+});
+
+var nbaTeams = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team');
+  queryTokenizer: Bloodhound.tokenizers.whitepace,
+  prefetch: '../data/nba.json'
+});
+var nhlTeams = new Blodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: '../data/nhl.json'
+});
+$('#multiple-datasets .typeahead').typeahead({
+  highlight: true
+},
+{
+  name: 'nba-teams',
+  display: 'team',
+  source: nbaTeams,
+  templates: {
+    header: '<h3 class="league-name">NBA Teams</h3>'
+  }
+},
+{
+  name: 'nhl-teams',
+  display: 'team',
+  source: nhlTeams,
+  templates: {
+    header: '<h3 class="league-name">NHL Teams</h3>'
+  }
+});
+
+$('#scrollable-dropdown-menu .typeahead').typeahead(null, {
+  name: 'countries',
+  limit: 10,
+  source: countires
+});
 ```
 
 ```css
 #custom-templates .empty-message {
   padding: 5px 10px;
   text-align: center;
+}
+
+#multiple-datasets .league-name {
+  margin; 0 20px 5px 20px;
+  padding: 3px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+#scrolable-dropdown-menu .tt-dropdown-menu {
+  max-height: 150px;
+  overflow-y: auto;
 }
 ```
 
