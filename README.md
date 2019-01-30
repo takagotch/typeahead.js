@@ -141,6 +141,25 @@ $('#scrollable-dropdown-menu .typeahead').typeahead(null, {
   limit: 10,
   source: countires
 });
+
+var arabicPhrases = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  local: [
+    "",
+    "", 
+    "",
+    "", 
+    "",
+  ]
+});
+$('#rtl-support .typeahead').typeahead({
+  hint: false
+},
+{
+  name: 'arabic-phrases',
+  source: arabicPhrases
+});
 ```
 
 ```css
@@ -158,6 +177,10 @@ $('#scrollable-dropdown-menu .typeahead').typeahead(null, {
 #scrolable-dropdown-menu .tt-dropdown-menu {
   max-height: 150px;
   overflow-y: auto;
+}
+
+#rtl-support .tt-dropdown-menu {
+  text-align: right;
 }
 ```
 
